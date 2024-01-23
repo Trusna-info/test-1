@@ -3,7 +3,8 @@ name: Sync to S3
 on:
   push:
     branches:
-      - '*'  # Trigger on all branches
+      - main
+      - my-feature* # Trigger on all branches
 
 jobs:
   deploy:
