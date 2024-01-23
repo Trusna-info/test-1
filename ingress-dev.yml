@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:3000, http://localhost"
+  name: amx-frontend
+spec:
+  tls:
+    - hosts:
+        - dev.devamx.com
+      secretName: amx-frontend
+  ingressClassName: nginx
+  rules:
+    - host: dev.devamx.com
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: amx-frontend
+                port:
+                  number: 80
