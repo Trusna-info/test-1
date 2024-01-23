@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - main
-      - my-feature
+      - my-feature*
 
 jobs:
   deploy:
