@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.org/proxy-connect-timeout: 9000s
+    nginx.org/proxy-read-timeout: 9000s
+    nginx.org/proxy-send-timeout: 9000s
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:3000, http://localhost, https://dev.devamx.com"
+  name: amx-sse
+spec:
+  tls:
+    - hosts:
+        - amx-sse.devamx.com
+      secretName: amx-sse
+  ingressClassName: nginx
+  rules:
+    - host: amx-sse.devamx.com
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: amx-sse
+                port:
+                  number: 80
